@@ -28,7 +28,7 @@
 
 .call-to-action-2 {
   padding:100px 0;
-  background-image: url('../images/call-to-action/call-to-action-bg.jpg');
+  background: linear-gradient(0deg, rgb(24 23 24 / 77%), rgb(35 34 34 / 96%)), url('../images/call-to-action/call-to-action-bg.jpg');
   background-size: cover;
   color: $light;
   h2 {
