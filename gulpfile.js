@@ -14,6 +14,7 @@ var path = {
     html: "source/*.html",
     others: "source/*.+(php|ico|png)",
     htminc: "source/partials/**/*.htm",
+    blogs:  "source/blogs/**/*",
     incdir: "source/partials/",
     plugins: "source/plugins/**/*.*",
     js: "source/js/*.js",
@@ -37,10 +38,9 @@ gulp.task("html:build", function () {
     )
     .pipe(
       comments(`
-    WEBSITE: https://themefisher.com
-    TWITTER: https://twitter.com/themefisher
-    FACEBOOK: https://www.facebook.com/themefisher
-    GITHUB: https://github.com/themefisher/
+    WEBSITE: https://siqhamo.media
+    FACEBOOK: https://www.facebook.com/Siqhamomedia
+    GITHUB: https://github.com/khonza/siqhamo-media-bingo
     `)
     )
     .pipe(gulp.dest(path.build.dirDev))
@@ -65,10 +65,9 @@ gulp.task("scss:build", function () {
     .pipe(sourcemaps.write("/"))
     .pipe(
       comments(`
-    WEBSITE: https://themefisher.com
-    TWITTER: https://twitter.com/themefisher
-    FACEBOOK: https://www.facebook.com/themefisher
-    GITHUB: https://github.com/themefisher/
+    WEBSITE: https://siqhamo.media
+    FACEBOOK: https://www.facebook.com/Siqhamomedia
+    GITHUB: https://github.com/khonza/siqhamo-media-bingo/
     `)
     )
     .pipe(gulp.dest(path.build.dirDev + "css/"))
@@ -85,10 +84,9 @@ gulp.task("js:build", function () {
     .src(path.src.js)
     .pipe(
       comments(`
-  WEBSITE: https://themefisher.com
-  TWITTER: https://twitter.com/themefisher
-  FACEBOOK: https://www.facebook.com/themefisher
-  GITHUB: https://github.com/themefisher/
+  WEBSITE: https://siqhamo.media
+  FACEBOOK: https://www.facebook.com/Siqhamomedia
+  GITHUB: https://github.com/khonza/siqhamo-media-bingo/
   `)
     )
     .pipe(gulp.dest(path.build.dirDev + "js/"))
@@ -111,6 +109,30 @@ gulp.task("images:build", function () {
     );
 });
 
+// Blogs
+gulp.task('blogs:build', () => {
+  return gulp
+    .src(path.src.blogs)
+    .pipe(
+      fileinclude({
+        prefix: "@@",
+        basepath: "@file",
+      })
+    )
+    .pipe(
+      comments(`
+    WEBSITE: https://siqhamo.media
+    FACEBOOK: https://www.facebook.com/Siqhamomedia
+    GITHUB: https://github.com/khonza/siqhamo-media-bingo
+    `)
+    )
+    .pipe(gulp.dest(`${path.build.dirDev}blogs/`))
+    .pipe(
+      bs.reload({
+        stream: true,
+      })
+    );
+});
 // Plugins
 gulp.task("plugins:build", function () {
   return gulp
@@ -140,6 +162,7 @@ gulp.task("watch:build", function () {
   gulp.watch(path.src.scss, gulp.series("scss:build"));
   gulp.watch(path.src.js, gulp.series("js:build"));
   gulp.watch(path.src.images, gulp.series("images:build"));
+  gulp.watch(path.src.blogs, gulp.series("blogs:build"));
   gulp.watch(path.src.plugins, gulp.series("plugins:build"));
 });
 
@@ -153,6 +176,7 @@ gulp.task(
     "scss:build",
     "images:build",
     "plugins:build",
+    "blogs:build",
     "others:build",
     gulp.parallel("watch:build", function () {
       bs.init({
@@ -172,6 +196,7 @@ gulp.task(
     "js:build",
     "scss:build",
     "images:build",
+    "blogs:build",
     "plugins:build"
   )
 );
